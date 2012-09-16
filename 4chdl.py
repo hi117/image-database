@@ -30,6 +30,9 @@ try:
         if 'tim' in post:
             filename=str(post['tim'])+post['ext']
             print('downloading: '+filename)
-            p._idb.addImageB(urlopen('https://images.4chan.org/'+argv[2]+'/src/'+filename).read(),'setMe')
+            try:
+                p._idb.addImageB(urlopen('https://images.4chan.org/'+argv[2]+'/src/'+filename).read(),'setMe')
+            except AssertionError:
+                print(filename+' already exists!')
 finally:
     p.close()
