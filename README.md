@@ -1,4 +1,4 @@
-This project requires kyotocabinet kyotocabinet-python.
+This project requires python3, kyotocabinet, and kyotocabinet-python.
 It is a personal project, do not expect it to be perfect.
 
 To use it from an external program, run this sample code:
@@ -17,3 +17,7 @@ redo some or all of the loops in gui.py
 theyre truly terrible for what this database was meant to do
 which is >1000 images per tag operations
 some options are to redo in C or to find a better algorithm
+
+Also creating a new database is broken last time i checked,
+requires manual intervention to make a workable database 
+due to how python handles pickling in 2 vs 3
