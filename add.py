@@ -23,13 +23,13 @@ import pictures as p
 from sys import argv,exit
 import os.path
 
-if len(argv)!=3:
-  print("Usage: python2 addall.py idb directory")
+if len(argv) != 3:
+  print("Usage: python addall.py idb directory")
   exit(1)
-p._idb=p.idb.db(argv[1])
-i=argv[2]
+p._idb = p.idb.db(argv[1])
+i = argv[2]
 if os.path.isfile(i):
     try:
-        p.add(i,'setMe')
+        p.add(i, 'setMe')
     except AssertionError as e:
         print('Already in database!')
