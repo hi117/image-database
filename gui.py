@@ -223,7 +223,7 @@ class mainWindow:
     # set the hash box to the correct value
     self.tagBar.set_text(', '.join(p.getImagesAll()[Hash][2]))
     self.tagBar.set_position(-1)
-  def setPictures(self,hashes):
+  def setPictures(self,hashes,NSFW=False):
     # sets the hash list to a list as defined by hashes
     if len(self.pictureHashes)>500:
         print('cleaning cache')
@@ -235,6 +235,8 @@ class mainWindow:
         i.hide()
     if not len(hashes): return
     for i in hashes:
+        if i in p._idb.byTag['NSFW'] and not NSFW:
+            continue
         if not i in self.pictureHashes:
             if len(self.pictureHashes):
                 b=gtk.RadioButton(group=self.pictures[0],label=i)
@@ -256,23 +258,25 @@ class mainWindow:
   def checkSearch(self,button=None):
     # refreshes the hash list
     search=self.genSearch()
+    NSFW=False
+    if 'NSFW' in search:
+        NSFW=True
     if len(search)==0:
       self.setPictures([])
     else:
       if search==['setMe']:
-        self.setPictures(sorted(p.searchTop(search,100)))
+        self.setPictures(sorted(p.searchTop(search,100)),NSFW)
       else:
-        self.setPictures(sorted(p.search(search).keys()))
-    if self.autoFilterTagsCheckbox.get_active():
-      self.autoFilterTags()
+        self.setPictures(sorted(p.search(search).keys()),NSFW)
     return False
   def saveTags(self,button):
     # saves changes to the tagbar for an active image
     for button in self.pictures:
       if button.get_active():
         p.setTags(self.tagBar.get_text().split(','),button.get_label())
+        button.toggled()
         break
-    self.refreshTags()
+    if self.refreshImagesButton.get_active(): self.refreshTags()
     return False
   def autoFilterTags(self,button=None):
     # returns a list of tags based on the current state of the tag list
@@ -328,7 +332,7 @@ class mainWindow:
     self.extractBotton=gtk.Button(label="Extract",stock=gtk.STOCK_SAVE_AS) # button to extract a picture from the db
     self.removeButton=gtk.Button(label="Remove",stock=gtk.STOCK_STOP) # removes an image from the db
     self.statsButton=gtk.Button(label="Show Stats")
-    self.autoFilterTagsCheckbox=gtk.CheckButton(label='Filter Tags')
+    self.refreshImagesButton=gtk.CheckButton(label='Refresh Images')
     self.img=gtk.Image() # the image preview
     self.listBox=gtk.HBox(False,0) # a box to hold the lists on the left side
     self.checkBoxesContainerScroll=gtk.ScrolledWindow() # a scrollable area for the tags
@@ -348,12 +352,12 @@ class mainWindow:
     self.barBox.pack_start(self.addButton,False,False,0)
     self.barBox.pack_start(self.extractBotton,False,False,0)
     self.barBox.pack_start(self.removeButton,False,False,0)
-    self.barBox.pack_start(self.autoFilterTagsCheckbox,False,False,0)
+    self.barBox.pack_start(self.refreshImagesButton,False,False,0)
     self.barBox.pack_start(self.statsButton,False,False,0)
     self.addButton.show()
     self.extractBotton.show()
     self.removeButton.show()
-    self.autoFilterTagsCheckbox.show()
+    self.refreshImagesButton.show()
     self.statsButton.show()
     self.barBox.show()
     self.mainBox.pack_start(self.barBox,False,False,0)

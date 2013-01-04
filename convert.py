@@ -1,4 +1,4 @@
-# adds a single file to the database
+# converts a tdb to a kch
 #
 # Copyright (c) 2011 Zachary Winnerman
 #
@@ -19,17 +19,17 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import pictures as p
-from sys import argv,exit
-import os.path
+import pytc
+from kyotocabinet import *
+from sys import argv
 
 if len(argv)!=3:
-  print("Usage: python2 addall.py idb directory")
-  exit(1)
-p._idb=p.idb.db(argv[1])
-i=argv[2]
-if os.path.isfile(i):
-    try:
-        p.add(i,'setMe')
-    except AssertionError as e:
-        print('Already in database!')
+  print 'usage: python2 convert.py tdb kch'
+
+tdb=pytc.BDB()
+tdb.open(argv[1], pytc.BDBOWRITER | pytc.BDBOREADER | pytc.BDBOCREAT)
+kdb=DB()
+kdb.open(argv[2], DB.OWRITER | DB.OCREATE | DB.OREADER)
+for key in tdb.keys():
+  print key
+  kdb.set(key,tdb.get(key))
