@@ -24,15 +24,15 @@ from sys import argv
 import json
 import pictures as p
 try:
-    p._idb=p.idb.db(argv[1])
-    thread = json.loads(str(urlopen('https://boards.4chan.org/'+argv[2]+'/res/'+argv[3]+'.json').read(),'utf8'))
+    p._idb = p.idb.db(argv[1])
+    thread = json.loads(str(urlopen('https://boards.4chan.org/'+argv[2] + '/res/' + argv[3] + '.json').read(), 'utf8'))
     for post in thread['posts']:
         if 'tim' in post:
-            filename=str(post['tim'])+post['ext']
-            print('downloading: '+filename)
+            filename = str(post['tim']) + post['ext']
+            print('downloading: ' + filename)
             try:
-                p._idb.addImageB(urlopen('https://images.4chan.org/'+argv[2]+'/src/'+filename).read(),'setMe')
+                p._idb.addImageB(urlopen('https://images.4chan.org/' + argv[2] + '/src/' + filename).read(), 'setMe')
             except AssertionError:
-                print(filename+' already exists!')
+                print(filename + ' already exists!')
 finally:
     p.close()
