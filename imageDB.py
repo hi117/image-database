@@ -19,7 +19,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import sys
-sys.path.append('/home/hi117/proj/simpleDB')
+sys.path.append('../simpleDB')
 
 from simpleDB import *
 from pickle import dumps,loads
