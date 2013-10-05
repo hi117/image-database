@@ -1,6 +1,6 @@
 # takes an argument of directory and image db and removes images from the driectory already in the db
 #
-# Copyright (c) 2011 Zachary Winnerman
+# Copyright (c) 2011 hi117
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
